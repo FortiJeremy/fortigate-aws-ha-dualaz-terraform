@@ -25,11 +25,3 @@ output "hamgmt_subnet1_id" {
 output "hamgmt_subnet2_id" {
   value = aws_subnet.hamgmt_subnet2.id
 }
-
-output "tgwattach_subnet1_id" {
-  value = aws_subnet.tgwattach_subnet1.id
-}
-
-output "tgwattach_subnet2_id" {
-  value = aws_subnet.tgwattach_subnet2.id
-}

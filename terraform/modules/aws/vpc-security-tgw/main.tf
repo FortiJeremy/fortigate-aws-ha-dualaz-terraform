@@ -69,6 +69,7 @@ resource "aws_subnet" "hamgmt_subnet2" {
 }
 
 resource "aws_subnet" "tgwattach_subnet1" {
+  count = var.tgw_creation == "yes" ? 1 : 0
   vpc_id = aws_vpc.vpc.id
   cidr_block = var.tgwattach_subnet_cidr1
   availability_zone = var.availability_zone1
@@ -78,6 +79,7 @@ resource "aws_subnet" "tgwattach_subnet1" {
 }
 
 resource "aws_subnet" "tgwattach_subnet2" {
+  count = var.tgw_creation == "yes" ? 1 : 0
   vpc_id = aws_vpc.vpc.id
   cidr_block = var.tgwattach_subnet_cidr2
   availability_zone = var.availability_zone2
@@ -104,7 +106,22 @@ resource "aws_route_table" "private_rt" {
   }
 }
 
+resource "aws_route" "route1" {
+  count = var.tgw_creation == "no" ? 1 : 0
+  route_table_id = aws_route_table.private_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  network_interface_id = var.fgt1_eni1_id
+}
+
+resource "aws_route" "route2" {
+  count = var.tgw_creation == "yes" ? 1 : 0
+  route_table_id = aws_route_table.private_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id = var.transit_gateway_id
+}
+
 resource "aws_route_table" "tgwattach_rt" {
+  count = var.tgw_creation == "yes" ? 1 : 0
   vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
@@ -146,18 +163,20 @@ resource "aws_route_table_association" "private_rt_association2" {
 }
 
 resource "aws_route_table_association" "tgwattach_rt_association1" {
-  subnet_id = aws_subnet.tgwattach_subnet1.id
-  route_table_id = aws_route_table.tgwattach_rt.id
+  count = var.tgw_creation == "yes" ? 1 : 0
+  subnet_id = aws_subnet.tgwattach_subnet1[0].id
+  route_table_id = aws_route_table.tgwattach_rt[0].id
 }
 
 resource "aws_route_table_association" "tgwattach_rt_association2" {
-  subnet_id = aws_subnet.tgwattach_subnet2.id
-  route_table_id = aws_route_table.tgwattach_rt.id
+  count = var.tgw_creation == "yes" ? 1 : 0
+  subnet_id = aws_subnet.tgwattach_subnet2[0].id
+  route_table_id = aws_route_table.tgwattach_rt[0].id
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attachment" {
   count = var.tgw_creation == "yes" ? 1 : 0
-  subnet_ids = [aws_subnet.tgwattach_subnet1.id, aws_subnet.tgwattach_subnet2.id]
+  subnet_ids = [aws_subnet.tgwattach_subnet1[0].id, aws_subnet.tgwattach_subnet2[0].id]
   transit_gateway_id = var.transit_gateway_id
   vpc_id = aws_vpc.vpc.id
   transit_gateway_default_route_table_association = false

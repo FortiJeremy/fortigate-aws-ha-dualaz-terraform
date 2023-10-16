@@ -161,7 +161,7 @@ enableEmoji = true
 
 [[menu.shortcuts]]
 name = "<i class='far fa-lightbulb'></i> CSE Team FGCP in AWS"
-url = "https://fortinetcloudcse.github.io/FGCP-AWS"
+url = "https://fortinetcloudcse.github.io/FGCP-in-AWS"
 weight = 1
 
 [[menu.shortcuts]]
