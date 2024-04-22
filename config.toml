@@ -159,17 +159,22 @@ enableEmoji = true
   # For external links you can define how they are opened in your browser; this setting will only be applied to the content area but not the shortcut menu
   externalLinkTarget = "_blank"
 
-[[menu.shortcuts]]
-name = "<i class='far fa-lightbulb'></i> CSE Team FGCP in AWS"
-url = "https://fortinetcloudcse.github.io/FGCP-in-AWS"
+[[menu.shortcuts]] 
+name = "<i class='fas fa-graduation-cap'></i> Fortinet Cloud CSE GitHub Org"
+url = "https://github.com/FortinetCloudCSE"
 weight = 1
+
+[[menu.shortcuts]]
+name = "<i class='far fa-lightbulb'></i> CSE Team FGTs & GWLB in AWS"
+url = "https://fortinetcloudcse.github.io/FGCP-in-AWS"
+weight = 2
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-chalkboard-teacher'></i> Fortinet in AWS Docs"
 url = "https://docs.fortinet.com/cloud-solutions/aws"
-weight = 2
+weight = 3
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-tools'></i> AWS MP Listings for Fortinet"
 url = "https://aws.amazon.com/marketplace/search/results?searchTerms=fortinet"
-weight = 3
+weight = 4
