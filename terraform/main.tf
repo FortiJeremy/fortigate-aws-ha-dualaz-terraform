@@ -4,6 +4,15 @@ provider "aws" {
   region = var.region
 }
 
+module "transit-gw" {
+  source = ".//modules/aws/tgw"
+  count = var.tgw_creation == "yes" ? 1 : 0
+  access_key = var.access_key
+  secret_key = var.secret_key
+  region = var.region
+  tag_name_prefix = var.tag_name_prefix
+}
+
 module "security-vpc" {
   source = ".//modules/aws/vpc-security-tgw"
   access_key = var.access_key
@@ -22,21 +31,12 @@ module "security-vpc" {
   tgwattach_subnet_cidr1 = var.security_vpc_tgwattach_subnet_cidr1
   tgwattach_subnet_cidr2 = var.security_vpc_tgwattach_subnet_cidr2
   fgt1_eni1_id = module.fgcp-ha.fgt1_eni1_id
+  tgw_creation = var.tgw_creation
+  transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
+  tgw_spoke_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_spoke_route_table_id : ""
+  tgw_security_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_security_route_table_id : ""
   tag_name_prefix = var.tag_name_prefix
   tag_name_unique = "security"
-  tgw_creation = var.tgw_creation
-
-  # to attach this security VPC to a new TGW, delete or comment out the next three lines
-  # otherwise leave uncommented
-  transit_gateway_id = ""
-  tgw_spoke_route_table_id = ""
-  tgw_security_route_table_id = ""
-
-  # to attach this security VPC to a new TGW, uncomment the next three lines 
-  # otherwise leave commented out 
-  #transit_gateway_id = module.transit-gw.tgw_id
-  #tgw_spoke_route_table_id = module.transit-gw.tgw_spoke_route_table_id
-  #tgw_security_route_table_id = module.transit-gw.tgw_security_route_table_id
 }
 
 module "fgcp-ha" {
@@ -88,20 +88,9 @@ module "fgcp-ha" {
   spoke_vpc2_cidr = var.spoke_vpc2_cidr
 }
 
-# To deploy a new TGW and two new spoke VPCs, uncomment each of the three modules below
-/*
-module "transit-gw" {
-  source = ".//modules/aws/tgw"
-  access_key = var.access_key
-  secret_key = var.secret_key
-  region = var.region
-  tag_name_prefix = var.tag_name_prefix
-}
-*/
-
-/*
 module "spoke-vpc1" {
   source = ".//modules/aws/vpc-spoke-tgw"
+  count = var.tgw_creation == "yes" ? 1 : 0
   access_key = var.access_key
   secret_key = var.secret_key
   region = var.region
@@ -111,17 +100,16 @@ module "spoke-vpc1" {
   vpc_cidr = var.spoke_vpc1_cidr
   private_subnet_cidr1 = var.spoke_vpc1_private_subnet_cidr1
   private_subnet_cidr2 = var.spoke_vpc1_private_subnet_cidr2
-  transit_gateway_id = module.transit-gw.tgw_id
-  tgw_spoke_route_table_id = module.transit-gw.tgw_spoke_route_table_id
-  tgw_security_route_table_id = module.transit-gw.tgw_security_route_table_id
+  transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
+  tgw_spoke_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_spoke_route_table_id : ""
+  tgw_security_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_security_route_table_id : ""
   tag_name_prefix = var.tag_name_prefix
   tag_name_unique = "spoke1"
 }
-*/
 
-/*
 module "spoke-vpc2" {
   source = ".//modules/aws/vpc-spoke-tgw"
+  count = var.tgw_creation == "yes" ? 1 : 0
   access_key = var.access_key
   secret_key = var.secret_key
   region = var.region
@@ -131,10 +119,9 @@ module "spoke-vpc2" {
   vpc_cidr = var.spoke_vpc2_cidr
   private_subnet_cidr1 = var.spoke_vpc2_private_subnet_cidr1
   private_subnet_cidr2 = var.spoke_vpc2_private_subnet_cidr2
-  transit_gateway_id = module.transit-gw.tgw_id
-  tgw_spoke_route_table_id = module.transit-gw.tgw_spoke_route_table_id
-  tgw_security_route_table_id = module.transit-gw.tgw_security_route_table_id
+  transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
+  tgw_spoke_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_spoke_route_table_id : ""
+  tgw_security_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_security_route_table_id : ""
   tag_name_prefix = var.tag_name_prefix
   tag_name_unique = "spoke2"
 }
-*/

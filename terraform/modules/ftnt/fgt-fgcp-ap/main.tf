@@ -61,6 +61,7 @@ resource "aws_iam_role_policy" "iam-role-policy" {
       "Sid": "SDNConnectorFortiView",
 	  "Effect": "Allow",
       "Action": [
+		"ec2:DescribeNetworkInterfaces",
 		"ec2:DescribeRegions",
 		"eks:DescribeCluster",
 		"eks:ListClusters",

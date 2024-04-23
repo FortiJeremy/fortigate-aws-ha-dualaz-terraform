@@ -13,6 +13,9 @@ region = "us-west-1"
 availability_zone1 = "us-west-1a"
 availability_zone2 = "us-west-1b"
 
+# To deploy a new TGW and two spoke VPCs, specify 'yes'
+tgw_creation = "yes"
+
 # Specify the name of the keypair that the FGTs will use.
 keypair = ""
 
@@ -43,7 +46,3 @@ fgt1_byol_license = ""
 fgt2_byol_license = ""
 fgt1_fortiflex_token = ""
 fgt2_fortiflex_token = ""
-
-# To deploy a new TGW and two spoke VPCs, specify 'yes'
-# NOTE... you will need to modify the main.tf file, reference comments for further info
-tgw_creation = "no"

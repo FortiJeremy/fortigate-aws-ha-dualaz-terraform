@@ -104,6 +104,7 @@ edit "aws-instance-role"
 set status enable
 set type aws
 set use-metadata-iam enable
+set alt-resource-ip enable
 next
 end
 

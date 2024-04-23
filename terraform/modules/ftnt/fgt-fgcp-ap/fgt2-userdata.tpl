@@ -99,6 +99,15 @@ next
 %{ endif }
 end
 
+config system sdn-connector
+edit "aws-instance-role"
+set status enable
+set type aws
+set use-metadata-iam enable
+set alt-resource-ip enable
+next
+end
+
 config system ha
 set group-name group1
 set mode a-p

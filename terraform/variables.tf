@@ -40,6 +40,10 @@ variable "security_vpc_hamgmt_subnet_cidr2" {
   description = "Provide the network CIDR for the hamgmt subnet2 in security vpc"
   default = "10.0.6.0/24"
 }
+variable "tgw_creation" {
+  description = "Provide a 'yes' to deply a new TGW, twp spoke VPCs, and configure the security VPC and fgts accordingly, otherwise leave as 'no'"
+  default = "no"
+}
 variable "security_vpc_tgwattach_subnet_cidr1" {
   description = "Provide the network CIDR for the tgwattach subnet1 in security vpc"
   default = "10.0.7.0/24"
@@ -47,6 +51,30 @@ variable "security_vpc_tgwattach_subnet_cidr1" {
 variable "security_vpc_tgwattach_subnet_cidr2" {
   description = "Provide the network CIDR for the tgwattach subnet2 in security vpc"
   default = "10.0.8.0/24"
+}
+variable "spoke_vpc1_cidr" {
+  description = "Provide the network CIDR for the VPC"
+  default = "10.1.0.0/16"
+}
+variable "spoke_vpc1_private_subnet_cidr1" {
+  description = "Provide the network CIDR for the private subnet1 in spoke vpc1"
+  default = "10.1.0.0/24"
+}
+variable "spoke_vpc1_private_subnet_cidr2" {
+  description = "Provide the network CIDR for the private subnet2 in spoke vpc1"
+  default = "10.1.1.0/24"
+}
+variable "spoke_vpc2_cidr" {
+  description = "Provide the network CIDR for the VPC"
+  default = "10.2.0.0/16"
+}
+variable "spoke_vpc2_private_subnet_cidr1" {
+  description = "Provide the network CIDR for the private subnet1 in spoke vpc2"
+  default = "10.2.0.0/24"
+}
+variable "spoke_vpc2_private_subnet_cidr2" {
+  description = "Provide the network CIDR for the private subnet2 in spoke vpc2"
+  default = "10.2.1.0/24"
 }
 variable "instance_type" {
   description = "Provide the instance type for the FortiGate instances"
@@ -147,32 +175,4 @@ variable "tag_name_prefix" {
 variable "tag_name_unique" {
   description = "Provide a unique tag prefix value that will be used in the name tag for each modules resources"
   default = "automatically handled by terraform modules"
-}
-variable "tgw_creation" {
-  description = "Provide a 'yes' to deply a new TGW and configure the security VPC and fgts accordingly, otherwise leave as 'no'"
-  default = "no"
-}
-variable "spoke_vpc1_cidr" {
-  description = "Provide the network CIDR for the VPC"
-  default = "10.1.0.0/16"
-}
-variable "spoke_vpc1_private_subnet_cidr1" {
-  description = "Provide the network CIDR for the private subnet1 in spoke vpc1"
-  default = "10.1.0.0/24"
-}
-variable "spoke_vpc1_private_subnet_cidr2" {
-  description = "Provide the network CIDR for the private subnet2 in spoke vpc1"
-  default = "10.1.1.0/24"
-}
-variable "spoke_vpc2_cidr" {
-  description = "Provide the network CIDR for the VPC"
-  default = "10.2.0.0/16"
-}
-variable "spoke_vpc2_private_subnet_cidr1" {
-  description = "Provide the network CIDR for the private subnet1 in spoke vpc2"
-  default = "10.2.0.0/24"
-}
-variable "spoke_vpc2_private_subnet_cidr2" {
-  description = "Provide the network CIDR for the private subnet2 in spoke vpc2"
-  default = "10.2.1.0/24"
 }
