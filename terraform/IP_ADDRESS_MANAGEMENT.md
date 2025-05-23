@@ -35,15 +35,45 @@ All IP addresses are calculated using this pattern:
 public_subnet1_intrinsic_router_ip = cidrhost(module.security-vpc.public_subnet1_cidr, 1)
 
 # FortiGate IPs (IP .11 in each subnet)
-fgt1_public_ip = "${cidrhost(module.security-vpc.public_subnet1_cidr, 11)}/24"
+fgt1_public_ip = "${cidrhost(module.security-vpc.public_subnet1_cidr, 11)}/${split("/", module.security-vpc.public_subnet1_cidr)[1]}"
 ```
 
 This approach ensures:
 1. All IP addresses are derived automatically from the subnet CIDRs
-2. Consistent allocation across environments
-3. No hardcoded IP addresses in the configuration
-4. Easier scaling and modification
-5. Using module outputs for subnet CIDRs improves readability and maintenance
+2. Subnet masks are derived directly from the subnet CIDRs, not hardcoded
+3. Consistent allocation across environments
+4. No hardcoded IP addresses or subnet masks in the configuration
+5. Easier scaling and modification
+6. Using module outputs for subnet CIDRs improves readability and maintenance
+
+## Local Variables for Enhanced Readability
+
+The code uses local variables to improve readability and maintainability:
+
+```terraform
+locals {
+  # FortiGate host number in each subnet
+  fgt_host_number = 11
+  
+  # Router is always the first host (.1) in each subnet
+  router_host_number = 1
+  
+  # Calculate subnet masks
+  public_subnet1_mask = split("/", module.security-vpc.public_subnet1_cidr)[1]
+  private_subnet1_mask = split("/", module.security-vpc.private_subnet1_cidr)[1]
+  # ... additional subnet masks
+  
+  # TGW resources conditional access
+  tgw_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
+  # ... additional TGW resources
+}
+```
+
+This approach:
+1. Makes the code more self-documenting
+2. Centralizes common calculations and values
+3. Reduces repetition and potential for errors
+4. Makes future maintenance easier
 
 ## Module Structure
 

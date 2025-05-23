@@ -20,11 +20,11 @@ This terraform deployment uses AWS provider authentication best practices and do
 4. AWS SSO:
    - Configure AWS SSO in your AWS CLI
 
-For more details, see the [AWS Provider Authentication documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration).
+For more details, see the [AWS_AUTHENTICATION.md](./AWS_AUTHENTICATION.md) file and the [AWS Provider Authentication documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration).
 
 <h2>IP Address Management</h2>
 
-This module uses dynamic IP address calculation with Terraform's `cidrsubnet` and `cidrhost` functions. All IP addresses are derived from the VPC CIDR blocks, eliminating hardcoded IP addresses.
+This module uses dynamic IP address calculation with Terraform's `cidrsubnet` and `cidrhost` functions. All IP addresses are derived from the VPC CIDR blocks, eliminating hardcoded IP addresses. Local variables improve readability and maintainability of these calculations.
 
 For details, see [IP_ADDRESS_MANAGEMENT.md](./IP_ADDRESS_MANAGEMENT.md) file.
 
@@ -36,5 +36,11 @@ The Terraform modules have been structured to avoid circular dependencies:
 - Subnet CIDRs are used directly from the VPC module outputs for IP calculations
 
 For details about the module architecture, see [MODULE_REFACTORING.md](./MODULE_REFACTORING.md).
+
+<h2>Version Constraints and Best Practices</h2>
+
+This project uses specific version constraints for Terraform and the AWS provider to ensure compatibility and stability. All outputs include descriptions for better documentation, and local variables have been implemented to improve code readability.
+
+For details, see [VERSION_CONSTRAINTS.md](./VERSION_CONSTRAINTS.md).
 
 <h3>To view the workshop, please go here: <a href="https://fortinetcloudcse.github.io/fortigate-aws-ha-dualaz-terraform/">fortigate-aws-ha-dualaz-terraform</a></h3><hr><h3>For more information on creating these workshops, please go here: <a href="https://fortinetcloudcse.github.io/UserRepo/">FortinetCloudCSE User Repo</a></h3>
