@@ -1,35 +1,17 @@
-provider "aws" {
-  access_key = var.access_key
-  secret_key = var.secret_key
-  region = var.region
-}
-
 module "transit-gw" {
   source = ".//modules/aws/tgw"
   count = var.tgw_creation == "yes" ? 1 : 0
-  access_key = var.access_key
-  secret_key = var.secret_key
   region = var.region
   tag_name_prefix = var.tag_name_prefix
 }
 
 module "security-vpc" {
   source = ".//modules/aws/vpc-security-tgw"
-  access_key = var.access_key
-  secret_key = var.secret_key
   region = var.region
   
   availability_zone1 = var.availability_zone1
   availability_zone2 = var.availability_zone2
   vpc_cidr = var.security_vpc_cidr
-  public_subnet_cidr1 = var.security_vpc_public_subnet_cidr1
-  public_subnet_cidr2 = var.security_vpc_public_subnet_cidr2
-  private_subnet_cidr1 = var.security_vpc_private_subnet_cidr1
-  private_subnet_cidr2 = var.security_vpc_private_subnet_cidr2
-  hamgmt_subnet_cidr1 = var.security_vpc_hamgmt_subnet_cidr1
-  hamgmt_subnet_cidr2 = var.security_vpc_hamgmt_subnet_cidr2
-  tgwattach_subnet_cidr1 = var.security_vpc_tgwattach_subnet_cidr1
-  tgwattach_subnet_cidr2 = var.security_vpc_tgwattach_subnet_cidr2
   fgt1_eni1_id = module.fgcp-ha.fgt1_eni1_id
   tgw_creation = var.tgw_creation
   transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
@@ -41,8 +23,6 @@ module "security-vpc" {
 
 module "fgcp-ha" {
   source = ".//modules/ftnt/fgt-fgcp-ap"
-  access_key = var.access_key
-  secret_key = var.secret_key
   region = var.region
 
   availability_zone1 = var.availability_zone1
@@ -91,15 +71,11 @@ module "fgcp-ha" {
 module "spoke-vpc1" {
   source = ".//modules/aws/vpc-spoke-tgw"
   count = var.tgw_creation == "yes" ? 1 : 0
-  access_key = var.access_key
-  secret_key = var.secret_key
   region = var.region
   
   availability_zone1 = var.availability_zone1
   availability_zone2 = var.availability_zone2
   vpc_cidr = var.spoke_vpc1_cidr
-  private_subnet_cidr1 = var.spoke_vpc1_private_subnet_cidr1
-  private_subnet_cidr2 = var.spoke_vpc1_private_subnet_cidr2
   transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
   tgw_spoke_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_spoke_route_table_id : ""
   tgw_security_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_security_route_table_id : ""
@@ -110,15 +86,11 @@ module "spoke-vpc1" {
 module "spoke-vpc2" {
   source = ".//modules/aws/vpc-spoke-tgw"
   count = var.tgw_creation == "yes" ? 1 : 0
-  access_key = var.access_key
-  secret_key = var.secret_key
   region = var.region
   
   availability_zone1 = var.availability_zone1
   availability_zone2 = var.availability_zone2
   vpc_cidr = var.spoke_vpc2_cidr
-  private_subnet_cidr1 = var.spoke_vpc2_private_subnet_cidr1
-  private_subnet_cidr2 = var.spoke_vpc2_private_subnet_cidr2
   transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
   tgw_spoke_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_spoke_route_table_id : ""
   tgw_security_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_security_route_table_id : ""

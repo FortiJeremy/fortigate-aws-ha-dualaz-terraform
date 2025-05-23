@@ -1,8 +1,10 @@
-variable "access_key" {}
-variable "secret_key" {}
 variable "region" {
   description = "Provide the region to deploy the VPC in"
   default = "us-east-1"
+}
+variable "tgw_creation" {
+  description = "Provide 'yes' to create a new Transit Gateway and two spoke VPCs.  Otherwise provide 'no' to use existing VPCs"
+  default = "no"
 }
 variable "availability_zone1" {
   description = "Provide the first availability zone to create the subnets in"
@@ -16,65 +18,13 @@ variable "security_vpc_cidr" {
   description = "Provide the network CIDR for the VPC"
   default = "10.0.0.0/16"
 }
-variable "security_vpc_public_subnet_cidr1" {
-  description = "Provide the network CIDR for the public subnet1 in security vpc"
-  default = "10.0.1.0/24"
-}
-variable "security_vpc_private_subnet_cidr1" {
-  description = "Provide the network CIDR for the private subnet1 in security vpc"
-  default = "10.0.3.0/24"
-}
-variable "security_vpc_hamgmt_subnet_cidr1" {
-  description = "Provide the network CIDR for the hamgmt subnet1 in security vpc"
-  default = "10.0.5.0/24"
-}
-variable "security_vpc_public_subnet_cidr2" {
-  description = "Provide the network CIDR for the public subnet2 in security vpc"
-  default = "10.0.2.0/24"
-}
-variable "security_vpc_private_subnet_cidr2" {
-  description = "Provide the network CIDR for the private subnet2 in security vpc"
-  default = "10.0.4.0/24"
-}
-variable "security_vpc_hamgmt_subnet_cidr2" {
-  description = "Provide the network CIDR for the hamgmt subnet2 in security vpc"
-  default = "10.0.6.0/24"
-}
-variable "tgw_creation" {
-  description = "Provide a 'yes' to deply a new TGW, twp spoke VPCs, and configure the security VPC and fgts accordingly, otherwise leave as 'no'"
-  default = "no"
-}
-variable "security_vpc_tgwattach_subnet_cidr1" {
-  description = "Provide the network CIDR for the tgwattach subnet1 in security vpc"
-  default = "10.0.7.0/24"
-}
-variable "security_vpc_tgwattach_subnet_cidr2" {
-  description = "Provide the network CIDR for the tgwattach subnet2 in security vpc"
-  default = "10.0.8.0/24"
-}
 variable "spoke_vpc1_cidr" {
   description = "Provide the network CIDR for the VPC"
   default = "10.1.0.0/16"
 }
-variable "spoke_vpc1_private_subnet_cidr1" {
-  description = "Provide the network CIDR for the private subnet1 in spoke vpc1"
-  default = "10.1.0.0/24"
-}
-variable "spoke_vpc1_private_subnet_cidr2" {
-  description = "Provide the network CIDR for the private subnet2 in spoke vpc1"
-  default = "10.1.1.0/24"
-}
 variable "spoke_vpc2_cidr" {
   description = "Provide the network CIDR for the VPC"
   default = "10.2.0.0/16"
-}
-variable "spoke_vpc2_private_subnet_cidr1" {
-  description = "Provide the network CIDR for the private subnet1 in spoke vpc2"
-  default = "10.2.0.0/24"
-}
-variable "spoke_vpc2_private_subnet_cidr2" {
-  description = "Provide the network CIDR for the private subnet2 in spoke vpc2"
-  default = "10.2.1.0/24"
 }
 variable "instance_type" {
   description = "Provide the instance type for the FortiGate instances"

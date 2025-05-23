@@ -4,10 +4,6 @@ Any variables in variables.tf can be overriden here.
 Overriding variables here keeps the variables.tf as a clean local reference.
 */
 
-# Provide the credentials to access the AWS account
-access_key = ""
-secret_key = ""
-
 # Specify the region and AZs to use.
 region = "us-west-1"
 availability_zone1 = "us-west-1a"

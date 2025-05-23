@@ -1,17 +1,9 @@
-variable "access_key" {}
-variable "secret_key" {}
 variable "region" {}
 variable "availability_zone1" {}
 variable "availability_zone2" {}
-variable "vpc_cidr" {}
-variable "public_subnet_cidr1" {}
-variable "public_subnet_cidr2" {}
-variable "private_subnet_cidr1" {}
-variable "private_subnet_cidr2" {}
-variable "hamgmt_subnet_cidr1" {}
-variable "hamgmt_subnet_cidr2" {}
-variable "tgwattach_subnet_cidr1" {}
-variable "tgwattach_subnet_cidr2" {}
+variable "vpc_cidr" {
+  description = "CIDR block for the VPC. All subnet CIDRs will be calculated from this."
+}
 variable "fgt1_eni1_id" {}
 variable "tag_name_prefix" {}
 variable "tag_name_unique" {}

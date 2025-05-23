@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "igw" {
 
 resource "aws_subnet" "public_subnet1" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.public_subnet_cidr1
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 0)
   availability_zone = var.availability_zone1
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-public-subnet1"
@@ -25,7 +25,7 @@ resource "aws_subnet" "public_subnet1" {
 
 resource "aws_subnet" "public_subnet2" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.public_subnet_cidr2
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 1)
   availability_zone = var.availability_zone2
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-public-subnet2"
@@ -34,7 +34,7 @@ resource "aws_subnet" "public_subnet2" {
 
 resource "aws_subnet" "private_subnet1" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.private_subnet_cidr1
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 2)
   availability_zone = var.availability_zone1
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-private-subnet1"
@@ -43,7 +43,7 @@ resource "aws_subnet" "private_subnet1" {
 
 resource "aws_subnet" "private_subnet2" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.private_subnet_cidr2
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 3)
   availability_zone = var.availability_zone2
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-private-subnet2"
@@ -52,7 +52,7 @@ resource "aws_subnet" "private_subnet2" {
 
 resource "aws_subnet" "hamgmt_subnet1" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.hamgmt_subnet_cidr1
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 4)
   availability_zone = var.availability_zone1
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-hamgmt-subnet1"
@@ -61,7 +61,7 @@ resource "aws_subnet" "hamgmt_subnet1" {
 
 resource "aws_subnet" "hamgmt_subnet2" {
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.hamgmt_subnet_cidr2
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 5)
   availability_zone = var.availability_zone2
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-hamgmt-subnet2"
@@ -71,7 +71,7 @@ resource "aws_subnet" "hamgmt_subnet2" {
 resource "aws_subnet" "tgwattach_subnet1" {
   count = var.tgw_creation == "yes" ? 1 : 0
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.tgwattach_subnet_cidr1
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 6)
   availability_zone = var.availability_zone1
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-tgwattach-subnet1"
@@ -81,7 +81,7 @@ resource "aws_subnet" "tgwattach_subnet1" {
 resource "aws_subnet" "tgwattach_subnet2" {
   count = var.tgw_creation == "yes" ? 1 : 0
   vpc_id = aws_vpc.vpc.id
-  cidr_block = var.tgwattach_subnet_cidr2
+  cidr_block = cidrsubnet(var.vpc_cidr, 3, 7)
   availability_zone = var.availability_zone2
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-tgwattach-subnet2"
