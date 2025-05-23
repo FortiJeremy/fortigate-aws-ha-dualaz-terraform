@@ -70,54 +70,8 @@ variable "fgt2_fortiflex_token" {
   description = "[FortiFlex only]Provide the FortiFlex Token for FortiGate2 (ie 2B3C4D5E6F7G8H9I0J1K)"
   default = ""
 }
-variable "security_vpc_public_subnet1_intrinsic_router_ip" {
-  description = "Provide the IP address of the AWS intrinsic router (First IP from security_vpc_public_subnet1)"
-  default = "10.0.1.1"
-}
-variable "security_vpc_private_subnet1_intrinsic_router_ip" {
-  description = "Provide the IP address of the AWS intrinsic router (First IP from security_vpc_private_subnet1)"
-  default = "10.0.3.1"
-}
-variable "security_vpc_hamgmt_subnet1_intrinsic_router_ip" {
-  description = "Provide the IP address of the AWS intrinsic router (First IP from security_vpc_hamgmt_subnet1)"
-  default = "10.0.5.1"
-}
-variable "security_vpc_public_subnet2_intrinsic_router_ip" {
-  description = "Provide the IP address of the AWS intrinsic router (First IP from security_vpc_public_subnet2)"
-  default = "10.0.2.1"
-}
-variable "security_vpc_private_subnet2_intrinsic_router_ip" {
-  description = "Provide the IP address of the AWS intrinsic router (First IP from security_vpc_private_subnet2)"
-  default = "10.0.4.1"
-}
-variable "security_vpc_hamgmt_subnet2_intrinsic_router_ip" {
-  description = "Provide the IP address of the AWS intrinsic router (First IP from security_vpc_hamgmt_subnet2)"
-  default = "10.0.6.1"
-}
-variable "fgt1_public_ip" {
-  description = "Provide the IP address in CIDR form for the public interface of fgt1 (IP from security_vpc_public_subnet)"
-  default = "10.0.1.11/24"
-}
-variable "fgt1_private_ip" {
-  description = "Provide the IP address in CIDR form for the private interface of fgt1 (IP from security_vpc_private_subnet)"
-  default = "10.0.3.11/24"
-}
-variable "fgt1_hamgmt_ip" {
-  description = "Provide the IP address in CIDR form for the ha mgmt interface of fgt1 (IP from security_vpc_hamgmt_subnet)"
-  default = "10.0.5.11/24"
-}
-variable "fgt2_public_ip" {
-  description = "Provide the IP address in CIDR form for the public interface of fgt2 (IP from security_vpc_public_subnet)"
-  default = "10.0.2.11/24"
-}
-variable "fgt2_private_ip" {
-  description = "Provide the IP address in CIDR form for the private interface of fgt2 (IP from security_vpc_private_subnet)"
-  default = "10.0.4.11/24"
-}
-variable "fgt2_hamgmt_ip" {
-  description = "Provide the IP address in CIDR form for the ha mgmt interface of fgt2 (IP from security_vpc_hamgmt_subnet)"
-  default = "10.0.6.11/24"
-}
+# Router and host IP variables have been removed in favor of cidrhost calculations
+
 variable "tag_name_prefix" {
   description = "Provide a common tag prefix value that will be used in the name tag for all resources"
   default = "stack-1"

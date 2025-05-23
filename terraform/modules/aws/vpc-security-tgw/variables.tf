@@ -4,7 +4,6 @@ variable "availability_zone2" {}
 variable "vpc_cidr" {
   description = "CIDR block for the VPC. All subnet CIDRs will be calculated from this."
 }
-variable "fgt1_eni1_id" {}
 variable "tag_name_prefix" {}
 variable "tag_name_unique" {}
 variable "tgw_creation" {}

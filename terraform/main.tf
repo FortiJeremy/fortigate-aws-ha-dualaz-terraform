@@ -12,7 +12,7 @@ module "security-vpc" {
   availability_zone1 = var.availability_zone1
   availability_zone2 = var.availability_zone2
   vpc_cidr = var.security_vpc_cidr
-  fgt1_eni1_id = module.fgcp-ha.fgt1_eni1_id
+  # Removed fgt1_eni1_id as it's no longer needed in this module
   tgw_creation = var.tgw_creation
   transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
   tgw_spoke_route_table_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_spoke_route_table_id : ""
@@ -24,6 +24,7 @@ module "security-vpc" {
 module "fgcp-ha" {
   source = ".//modules/ftnt/fgt-fgcp-ap"
   region = var.region
+  depends_on = [module.security-vpc] # Ensure VPC is fully created before starting FortiGate deployment
 
   availability_zone1 = var.availability_zone1
   availability_zone2 = var.availability_zone2
@@ -35,6 +36,11 @@ module "fgcp-ha" {
   public_subnet2_id = module.security-vpc.public_subnet2_id
   private_subnet2_id = module.security-vpc.private_subnet2_id
   hamgmt_subnet2_id = module.security-vpc.hamgmt_subnet2_id
+  
+  # Add route table IDs
+  private_rt_id = module.security-vpc.private_rt_id
+  tgwattach_rt_id = var.tgw_creation == "yes" ? module.security-vpc.tgwattach_rt_id : ""
+  transit_gateway_id = var.tgw_creation == "yes" ? module.transit-gw[0].tgw_id : ""
 
   cidr_for_access = var.cidr_for_access
   keypair = var.keypair
@@ -46,22 +52,24 @@ module "fgcp-ha" {
   fgt1_byol_license = var.fgt1_byol_license
   fgt2_byol_license = var.fgt2_byol_license
   fgt1_fortiflex_token = var.fgt1_fortiflex_token
-  fgt2_fortiflex_token = var.fgt2_fortiflex_token
-  public_subnet1_intrinsic_router_ip = var.security_vpc_public_subnet1_intrinsic_router_ip
-  private_subnet1_intrinsic_router_ip = var.security_vpc_private_subnet1_intrinsic_router_ip
-  hamgmt_subnet1_intrinsic_router_ip = var.security_vpc_hamgmt_subnet1_intrinsic_router_ip
-  public_subnet2_intrinsic_router_ip = var.security_vpc_public_subnet2_intrinsic_router_ip
-  private_subnet2_intrinsic_router_ip = var.security_vpc_private_subnet2_intrinsic_router_ip
-  hamgmt_subnet2_intrinsic_router_ip = var.security_vpc_hamgmt_subnet2_intrinsic_router_ip
+  fgt2_fortiflex_token = var.fgt2_fortiflex_token  
+  # Calculate router IPs - router is always the first host (.1) in each subnet
+  public_subnet1_intrinsic_router_ip = cidrhost(module.security-vpc.public_subnet1_cidr, 1)
+  private_subnet1_intrinsic_router_ip = cidrhost(module.security-vpc.private_subnet1_cidr, 1)
+  hamgmt_subnet1_intrinsic_router_ip = cidrhost(module.security-vpc.hamgmt_subnet1_cidr, 1)
+  public_subnet2_intrinsic_router_ip = cidrhost(module.security-vpc.public_subnet2_cidr, 1)
+  private_subnet2_intrinsic_router_ip = cidrhost(module.security-vpc.private_subnet2_cidr, 1)
+  hamgmt_subnet2_intrinsic_router_ip = cidrhost(module.security-vpc.hamgmt_subnet2_cidr, 1)
   tag_name_prefix = var.tag_name_prefix
 
-  fgt1_public_ip = var.fgt1_public_ip
-  fgt1_private_ip = var.fgt1_private_ip
-  fgt1_hamgmt_ip = var.fgt1_hamgmt_ip
+  # Calculate FortiGate IPs - host .11 in each subnet with /24 netmask
+  fgt1_public_ip = "${cidrhost(module.security-vpc.public_subnet1_cidr, 11)}/24"
+  fgt1_private_ip = "${cidrhost(module.security-vpc.private_subnet1_cidr, 11)}/24"
+  fgt1_hamgmt_ip = "${cidrhost(module.security-vpc.hamgmt_subnet1_cidr, 11)}/24"
 
-  fgt2_public_ip = var.fgt2_public_ip
-  fgt2_private_ip = var.fgt2_private_ip
-  fgt2_hamgmt_ip = var.fgt2_hamgmt_ip
+  fgt2_public_ip = "${cidrhost(module.security-vpc.public_subnet2_cidr, 11)}/24"
+  fgt2_private_ip = "${cidrhost(module.security-vpc.private_subnet2_cidr, 11)}/24"
+  fgt2_hamgmt_ip = "${cidrhost(module.security-vpc.hamgmt_subnet2_cidr, 11)}/24"
 
   tgw_creation = var.tgw_creation
   spoke_vpc1_cidr = var.spoke_vpc1_cidr

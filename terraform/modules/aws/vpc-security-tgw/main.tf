@@ -106,27 +106,10 @@ resource "aws_route_table" "private_rt" {
   }
 }
 
-resource "aws_route" "route1" {
-  count = var.tgw_creation == "no" ? 1 : 0
-  route_table_id = aws_route_table.private_rt.id
-  destination_cidr_block = "0.0.0.0/0"
-  network_interface_id = var.fgt1_eni1_id
-}
-
-resource "aws_route" "route2" {
-  count = var.tgw_creation == "yes" ? 1 : 0
-  route_table_id = aws_route_table.private_rt.id
-  destination_cidr_block = "0.0.0.0/0"
-  transit_gateway_id = var.transit_gateway_id
-}
-
 resource "aws_route_table" "tgwattach_rt" {
   count = var.tgw_creation == "yes" ? 1 : 0
   vpc_id = aws_vpc.vpc.id
-  route {
-    cidr_block = "0.0.0.0/0"
-	network_interface_id = var.fgt1_eni1_id
-  }
+  # Routes are created in the FortiGate module to avoid circular dependencies
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-tgwattach-rt"
   }

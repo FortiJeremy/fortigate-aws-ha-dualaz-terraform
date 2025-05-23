@@ -5,3 +5,5 @@ node_modules/
 docker-compose.yml
 package-lock.json
 package.json
+terraform/main.tf.bak
+terraform/main.tf.new

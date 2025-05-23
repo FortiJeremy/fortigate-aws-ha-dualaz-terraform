@@ -36,3 +36,14 @@ variable "tag_name_prefix" {}
 variable "spoke_vpc1_cidr" {}
 variable "spoke_vpc2_cidr" {}
 variable "tgw_creation" {}
+variable "transit_gateway_id" {
+  default = ""
+  description = "Transit Gateway ID, required only when tgw_creation is yes"
+}
+variable "private_rt_id" {
+  description = "ID of the private route table from the security VPC"
+}
+variable "tgwattach_rt_id" {
+  default = ""
+  description = "ID of the TGW attachment route table, required only when tgw_creation is yes"
+}
